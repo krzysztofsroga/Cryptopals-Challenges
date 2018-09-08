@@ -22,11 +22,12 @@ class Challenge2 {
     fun testConversion() {
         val bytes1 = splitIntoLongs(input1)
         val bytes2 = splitIntoLongs(input2)
-        var output = ""
-        (bytes1 zip bytes2).map { pair -> pair.first xor pair.second }.forEach {
-            output += String.format("%02x", it)
-        }
+        val output = (bytes1 zip bytes2)
+                .map { pair -> pair.first xor pair.second }
+                .joinToString(separator = "") { String.format("%02x", it) }
+
         println("Result: $output")
+
         if (output != expectedOutput) {
             throw RuntimeException("Expected result: $expectedOutput")
         }
