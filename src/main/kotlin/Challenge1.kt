@@ -10,11 +10,9 @@
  * So go ahead and make that happen. You'll need to use this code for the rest of the exercises.
  */
 
-class Bits12(val first4: Int, val second4: Int, val third4: Int) {
-    val first6: Int
-        get() = (first4 shl 2) or (second4 shr 2)
-    val second6: Int
-        get() = ((second4 shl 4) or third4) and 0x3f
+class Int12(bits: Int) {
+    val first6 = bits shr 6
+    val last6 = bits and 0x3f
 }
 
 class Challenge1 {
@@ -24,8 +22,7 @@ class Challenge1 {
 
     fun testConversion() {
         testString.length.let { println(it) }
-//        splitIntoLongs(testString)
-        println(splitToBase64(testString))
+        println(base64(testString))
     }
 
 //    private fun splitIntoLongs(string: String): Collection<Long> {
@@ -38,12 +35,12 @@ class Challenge1 {
 //        return list
 //    }
 
-    private fun splitToBase64(string: String): String {
+    private fun base64(string: String): String {
         var outputString = ""
         for (i in 0 until string.length step 3) {
-            val bits12 = Bits12(string.slice(i until i + 1).toInt(16), string.slice(i + 1 until i + 2).toInt(16), string.slice(i + 2 until i + 3).toInt(16))
-            outputString += conversionValues[bits12.first6]
-            outputString += conversionValues[bits12.second6]
+            val int12 = Int12(string.slice(i..i + 2).toInt(16))
+            outputString += conversionValues[int12.first6]
+            outputString += conversionValues[int12.last6]
         }
         return outputString
     }
