@@ -24,24 +24,24 @@ class Challenge1 {
 
     fun testConversion() {
         testString.length.let { println(it) }
-        splitIntoLongs(testString)
+//        splitIntoLongs(testString)
         println(splitToBase64(testString))
     }
 
-    private fun splitIntoLongs(string: String): Collection<Long> {
-        var list = listOf<Long>()
-        for (i in 0 until string.length step 4) {
-            val a = string.slice(i until i + 4).toLong(16)
-            print(String.format("%02X ", a))
-            list += a
-        }
-        return list
-    }
+//    private fun splitIntoLongs(string: String): Collection<Long> {
+//        var list = listOf<Long>()
+//        for (i in 0 until string.length step 4) {
+//            val a = string.slice(i until i + 4).toLong(16)
+//            print(String.format("%02X ", a))
+//            list += a
+//        }
+//        return list
+//    }
 
     private fun splitToBase64(string: String): String {
         var outputString = ""
         for (i in 0 until string.length step 3) {
-            val bits12 = Bits12(string[i].toString().toInt(16), string[i+1].toString().toInt(16), string[i+2].toString().toInt(16))
+            val bits12 = Bits12(string.slice(i until i + 1).toInt(16), string.slice(i + 1 until i + 2).toInt(16), string.slice(i + 2 until i + 3).toInt(16))
             outputString += conversionValues[bits12.first6]
             outputString += conversionValues[bits12.second6]
         }
