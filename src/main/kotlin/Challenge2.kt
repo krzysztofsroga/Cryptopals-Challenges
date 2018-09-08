@@ -20,11 +20,7 @@ class Challenge2 {
     val expectedOutput = "746865206b696420646f6e277420706c6179"
 
     fun testConversion() {
-        val bytes1 = splitIntoLongs(input1)
-        val bytes2 = splitIntoLongs(input2)
-        val output = (bytes1 zip bytes2)
-                .map { pair -> pair.first xor pair.second }
-                .joinToString(separator = "") { String.format("%02x", it) }
+        val output = Utils.xorString(input1, input2)
 
         println("Result: $output")
 
@@ -32,15 +28,6 @@ class Challenge2 {
             throw RuntimeException("Expected result: $expectedOutput")
         }
     }
-
-    private fun splitIntoLongs(string: String): Collection<Long> {
-        var list = listOf<Long>()
-        for (i in 0 until string.length step 4) {
-            list += string.slice(i until i + 4).toLong(16)
-        }
-        return list
-    }
-
 }
 
 fun main(args: Array<String>) {
