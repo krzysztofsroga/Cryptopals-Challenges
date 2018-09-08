@@ -25,16 +25,6 @@ class Challenge1 {
         println(base64(testString))
     }
 
-//    private fun splitIntoLongs(string: String): Collection<Long> {
-//        var list = listOf<Long>()
-//        for (i in 0 until string.length step 4) {
-//            val a = string.slice(i until i + 4).toLong(16)
-//            print(String.format("%02X ", a))
-//            list += a
-//        }
-//        return list
-//    }
-
     private fun base64(string: String): String {
         var outputString = ""
         for (i in 0 until string.length step 3) {
@@ -47,6 +37,5 @@ class Challenge1 {
 }
 
 fun main(args: Array<String>) {
-    println("hello world")
     Challenge1().testConversion()
 }
