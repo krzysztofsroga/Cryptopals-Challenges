@@ -14,22 +14,23 @@
  */
 
 
-class Challenge2 {
-    val input1 = "1c0111001f010100061a024b53535009181c".asHexString()
-    val input2 = "686974207468652062756c6c277320657965".asHexString()
-    val expectedOutput = "746865206b696420646f6e277420706c6179".asHexString()
-
-    fun testConversion() {
-        val output = Utils.xorHexStrings(input1, input2)
-
-        println("Result: $output")
-
-        if (output != expectedOutput) {
-            throw RuntimeException("Expected result: $expectedOutput")
-        }
+class Challenge2(val input1: HexString, val input2: HexString) {
+    fun testConversion(): HexString {
+        return Utils.xorHexStrings(input1, input2)
     }
 }
 
 fun main(args: Array<String>) {
-    Challenge2().testConversion()
+    val challenge = Challenge2(
+            input1 = "1c0111001f010100061a024b53535009181c".asHexString(),
+            input2 = "686974207468652062756c6c277320657965".asHexString()
+    )
+    val expectedOutput = "746865206b696420646f6e277420706c6179".asHexString()
+
+    val output = challenge.testConversion()
+    println("Result: $output")
+
+    if (output != expectedOutput) {
+        throw RuntimeException("Expected result: $expectedOutput")
+    }
 }
