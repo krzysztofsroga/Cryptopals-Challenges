@@ -1,4 +1,4 @@
-class Challenge3(val encodedString: String) {
+class Challenge3(val hexString: HexString) {
     private val letterStats = mapOf(
             'a' to 0.08167, 'b' to 0.01492,
             'c' to 0.02782, 'd' to 0.04253,
@@ -20,18 +20,18 @@ class Challenge3(val encodedString: String) {
         letterStats[character] ?: 0.0
     }.sum()
 
-    private fun xorWithCharacter(string: String, character: String): String {
-        val code = character.repeat(string.length / character.length)
-        return Utils.xorString(string, code)
+    private fun xorWithRepeated(string: HexString, toRepeat: HexString): HexString {
+        val code = HexString(toRepeat.hex.repeat(string.length / toRepeat.length))
+        return Utils.xorHexStrings(string, code)
     }
 
-    class BruteForceResult(val character: String, val string: String, val score: Double)
+    class BruteForceResult(val character: HexString, val string: String, val score: Double)
 
     fun findBestMatch() {
-        val bestMatch = Utils.byteHexCharacters.map { character ->
-            val string = Utils.toAsciiString(xorWithCharacter(encodedString, character))
+        val bestMatch = Utils.byteHexCharacters.map { hexCharacter ->
+            val string = Utils.toAsciiString(xorWithRepeated(hexString, hexCharacter))
             val score = scoreString(string)
-            BruteForceResult(character, string, score)
+            BruteForceResult(hexCharacter, string, score)
         }.maxBy { result ->
             result.score
         }!!
@@ -39,7 +39,7 @@ class Challenge3(val encodedString: String) {
 //        println("All other strings: ")
 //        println(
 //                Utils.byteHexCharacters.map { character ->
-//                    Utils.toAsciiString(xorWithCharacter(encodedString, character))
+//                    Utils.toAsciiString(xorWithRepeated(hexString, character))
 //                }.joinToString(separator = "\n")
 //        )
     }
@@ -47,6 +47,6 @@ class Challenge3(val encodedString: String) {
 }
 
 fun main(args: Array<String>) {
-    val challenge = Challenge3("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
+    val challenge = Challenge3(HexString("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"))
     challenge.findBestMatch()
 }

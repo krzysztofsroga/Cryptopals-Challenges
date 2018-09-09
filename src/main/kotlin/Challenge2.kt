@@ -15,12 +15,12 @@
 
 
 class Challenge2 {
-    val input1 = "1c0111001f010100061a024b53535009181c"
-    val input2 = "686974207468652062756c6c277320657965"
-    val expectedOutput = "746865206b696420646f6e277420706c6179"
+    val input1 = "1c0111001f010100061a024b53535009181c".asHexString()
+    val input2 = "686974207468652062756c6c277320657965".asHexString()
+    val expectedOutput = "746865206b696420646f6e277420706c6179".asHexString()
 
     fun testConversion() {
-        val output = Utils.xorString(input1, input2)
+        val output = Utils.xorHexStrings(input1, input2)
 
         println("Result: $output")
 
