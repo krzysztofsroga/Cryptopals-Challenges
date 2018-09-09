@@ -15,19 +15,19 @@
 
 
 class Challenge2(val input1: HexString, val input2: HexString) {
-    fun testConversion(): HexString {
+    fun xorStrings(): HexString {
         return Utils.xorHexStrings(input1, input2)
     }
 }
 
 fun main(args: Array<String>) {
+    val expectedOutput = "746865206b696420646f6e277420706c6179".asHexString()
     val challenge = Challenge2(
             input1 = "1c0111001f010100061a024b53535009181c".asHexString(),
             input2 = "686974207468652062756c6c277320657965".asHexString()
     )
-    val expectedOutput = "746865206b696420646f6e277420706c6179".asHexString()
 
-    val output = challenge.testConversion()
+    val output = challenge.xorStrings()
     println("Result: $output")
 
     if (output != expectedOutput) {
