@@ -12,7 +12,8 @@ class Challenge3(val encodedString: String) {
             's' to 0.06327, 't' to 0.09056,
             'u' to 0.02758, 'v' to 0.00978,
             'w' to 0.02360, 'x' to 0.00150,
-            'y' to 0.01974, 'z' to 0.00074
+            'y' to 0.01974, 'z' to 0.00074,
+            ' ' to 0.2
     )
 
     private fun scoreString(string: String) = string.toLowerCase().map { character ->
@@ -28,19 +29,19 @@ class Challenge3(val encodedString: String) {
 
     fun findBestMatch() {
         val bestMatch = Utils.byteHexCharacters.map { character ->
-            val string = Utils.base64(xorWithCharacter(encodedString, character))
+            val string = Utils.toAsciiString(xorWithCharacter(encodedString, character))
             val score = scoreString(string)
             BruteForceResult(character, string, score)
         }.maxBy { result ->
             result.score
         }!!
         println("Best matching character is: ${bestMatch.character} which scored ${bestMatch.score} and produced sentence: '${bestMatch.string}'")
-        println("All other strings: ")
-        println(
-                Utils.byteHexCharacters.map { character ->
-                    Utils.base64(xorWithCharacter(encodedString, character))
-                }.joinToString(separator = "\n")
-        )
+//        println("All other strings: ")
+//        println(
+//                Utils.byteHexCharacters.map { character ->
+//                    Utils.toAsciiString(xorWithCharacter(encodedString, character))
+//                }.joinToString(separator = "\n")
+//        )
     }
 
 }

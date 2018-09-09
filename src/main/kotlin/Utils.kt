@@ -39,4 +39,18 @@ object Utils {
         }
         return outputString
     }
+
+    fun toAsciiString(hexString: String): String {
+        return splitIntoChars(hexString).joinToString(separator = "")
+    }
+
+    private fun splitIntoChars(hexString: String): CharArray {
+        var list = listOf<Char>()
+        for (i in 0 .. hexString.length - 2 step 2) {
+            list += hexString.slice(i..i+1).toInt(16).toChar()
+        }
+        return list.toCharArray()
+    }
 }
+
+//inline class HexString(val value: String)
