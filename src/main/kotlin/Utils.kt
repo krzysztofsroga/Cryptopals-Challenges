@@ -22,6 +22,10 @@ object Utils {
             'j' to 0.0011440544, 'q' to 0.0008809302, 'z' to 0.0005979301
     ) // from http://www.macfreek.nl/memory/Letter_Distribution#Letter_Frequency
 
+    fun scoreStringByCharacters(string: String) = string.toLowerCase().map { character ->
+        Utils.characterStats[character] ?: 0.0
+    }.sum()
+
     class Int12(bits: Int) {
         val first6 = bits shr 6
         val last6 = bits and 0x3f
