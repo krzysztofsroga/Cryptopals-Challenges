@@ -39,6 +39,11 @@ object Utils {
         }
     }
 
+    fun xorWithRepeated(string: HexString, toRepeat: HexString): HexString {
+        val code = HexString(toRepeat.hex.repeat(string.length / toRepeat.length))
+        return Utils.xorHexStrings(string, code)
+    }
+
     private fun splitIntoLongs(string: HexString): List<Long> {
         var list = listOf<Long>()
         for (i in 0..string.length - 4 step 4) {

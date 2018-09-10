@@ -13,3 +13,4 @@ class HexString(val hex: String) {
 
 }
 fun String.asHexString() = HexString(this)
+fun String.toHexString() = HexString(map { String.format("%02x", it.toInt()) }.joinToString(separator = ""))

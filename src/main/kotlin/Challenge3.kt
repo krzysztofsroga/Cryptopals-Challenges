@@ -14,15 +14,12 @@
 
 class Challenge3(private val hexString: HexString) {
 
-    private fun xorWithRepeated(string: HexString, toRepeat: HexString): HexString {
-        val code = HexString(toRepeat.hex.repeat(string.length / toRepeat.length))
-        return Utils.xorHexStrings(string, code)
-    }
+
 
 
     fun findBestMatch(): BruteForceResult? {
         return Utils.byteHexCharacters.map { hexCharacter ->
-            val string = Utils.toAsciiString(xorWithRepeated(hexString, hexCharacter))
+            val string = Utils.toAsciiString(Utils.xorWithRepeated(hexString, hexCharacter))
             val score = Utils.scoreStringByCharacters(string)
             BruteForceResult(hexCharacter, string, score)
         }.maxBy { result ->
