@@ -15,7 +15,7 @@ object AdvancedUtils {
         val bytesToRepeat = toRepeat.toByteArray()
 
         for (i in 0 until length) {
-            result += thisBytes[i] xor bytesToRepeat[i%repeatedLength]
+            result += thisBytes[i] xor bytesToRepeat[i % repeatedLength]
         }
         return result.toByteArray().contentToString()
 //        val x = ByteBuffer.wrap(this.toByteArray().to).
@@ -23,7 +23,7 @@ object AdvancedUtils {
 }
 
 infix fun String.xorRepeated(toRepeat: String): String {
-    val repeated = toRepeat.repeat(length / toRepeat.length + 1 ).substring(0 until length)
+    val repeated = toRepeat.repeat(length / toRepeat.length + 1).substring(0 until length)
     return this xor repeated
 }
 
@@ -33,3 +33,6 @@ infix fun String.xor(other: String): String {
 
     return (first xor second).toByteArray().toString(charset)
 }
+
+fun String.bitCount(): Int = BigInteger(toByteArray(charset)).bitCount()
+
