@@ -28,19 +28,6 @@ object Utils {
         Utils.characterStats[character] ?: 0.0
     }.sum()
 
-//    class Int12(bits: Int) {
-//        //for encoding
-//        val first6 = bits shr 6
-//        val last6 = bits and 0x3f
-//
-//        //for decoding
-//        val first4 = bits shr 8
-//        val second4 = (bits shr 4) and 0x0f
-//        val third4 = bits and 0x0f
-//    }
-
-//    const val base64characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-//    val hexCharacters = "0123456789abcdef".asHexString()
     val byteHexCharacters = buildSequence {
         for (i in 0..255) {
             yield(String.format("%02x", i).asHexString())
@@ -71,17 +58,9 @@ object Utils {
     }
 
     fun base64(hexString: HexString): Base64String {
-//        hexString.hex.toCharArray().toTypedArray().toList().mapPairs { first, second -> first.toString().toInt(16) shl 4 or }
         val array = hexString.hex.mapSlices(2) { it.toInt(16).toByte() }.toByteArray()
         return Base64.getEncoder().encode(array).toString(StandardCharsets.UTF_8).asBase64String()
 
-//        var outputString = ""
-//        for (i in 0..hexString.length - 3 step 3) {
-//            val int12 = Int12(hexString.hex.slice(i..i + 2).toInt(16))
-//            outputString += Utils.base64characters[int12.first6]
-//            outputString += Utils.base64characters[int12.last6]
-//        }
-//        return outputString.asBase64String()
     }
 
     fun toAsciiString(hexString: HexString): String {
