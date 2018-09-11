@@ -1,4 +1,3 @@
-import AdvancedUtils.convertString
 
 /**
  * Implement repeating-key XOR

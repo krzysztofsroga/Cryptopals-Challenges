@@ -2,6 +2,9 @@ import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import kotlin.experimental.xor
+import java.nio.charset.Charset
+
+val charset: Charset = StandardCharsets.UTF_8
 
 object AdvancedUtils {
     infix fun String.xorWithRepeating(toRepeat: String): String {
@@ -17,26 +20,16 @@ object AdvancedUtils {
         return result.toByteArray().contentToString()
 //        val x = ByteBuffer.wrap(this.toByteArray().to).
     }
-
-
-
-
-    fun convertString(string: String): String {
-        val a = BigInteger(string.toByteArray(StandardCharsets.UTF_8))
-        val b = a.toByteArray().toString(StandardCharsets.UTF_8)
-        return b
-    }
 }
 
 infix fun String.xorRepeated(toRepeat: String): String {
-    val charset = StandardCharsets.UTF_8
-
     val repeated = toRepeat.repeat(length / toRepeat.length + 1 ).substring(0 until length)
+    return this xor repeated
+}
 
+infix fun String.xor(other: String): String {
     val first = BigInteger(toByteArray(charset))
-    val second = BigInteger(repeated.toByteArray(charset))
+    val second = BigInteger(other.toByteArray(charset))
 
-    val result = first xor second
-
-    return result.toByteArray().toString(charset)
+    return (first xor second).toByteArray().toString(charset)
 }
