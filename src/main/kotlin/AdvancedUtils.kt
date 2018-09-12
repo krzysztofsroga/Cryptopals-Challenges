@@ -56,11 +56,14 @@ inline fun <R> String.mapSlices(sliceLength: Int, transform: (String) -> R): Lis
 }
 
 fun String.asSlices(sliceLength: Int): List<String> {
-    val list = mutableListOf<String>()
-    for (i in 0 until length step sliceLength) {
-        list += saveSlice(i until i + sliceLength)
+    return ( 0 until length step sliceLength).map {i->
+        saveSlice(i until i + sliceLength)
     }
-    return list
+//    val list = mutableListOf<String>()
+//    for (i in 0 until length step sliceLength) {
+//        list += saveSlice(i until i + sliceLength)
+//    }
+//    return list
 }
 
 fun Collection<String>.transposed(): List<String> {
