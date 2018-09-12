@@ -4,21 +4,20 @@ import java.nio.charset.StandardCharsets
 import kotlin.math.min
 
 class Challenge8(file: File) {
-    class DetectionResult(val matches: Int, val string: String)
-
     private val hexStrings = file.readLines(StandardCharsets.UTF_8)
 
-    fun detectEcb(blockSize: Int): String {
+    fun detectEcb(blockSize: Int): HexString {
         return hexStrings.map { hex ->
-            DetectionResult(countBlockMatches(Hex.decode(hex), blockSize), hex)
-        }.maxBy { it.matches }!!.string
+            val repeatedCount = countRepeatingBlocks(Hex.decode(hex), blockSize)
+            DetectionResult(score = repeatedCount, hex = HexString(hex))
+        }.maxBy { it.score }!!.hex
     }
 
-    private fun countBlockMatches(cipher: ByteArray, blockSize: Int): Int {
-        val blocks = cipher.toSlices(blockSize)
+    private fun countRepeatingBlocks(data: ByteArray, blockSize: Int): Int {
+        val blocks = data.toSlices(blockSize)
         val indexedBlocks = blocks.mapIndexed { index, block -> index to block }
         return indexedBlocks.sumBy { (i, block) ->
-            indexedBlocks.count { (j, other) -> (j > i && block.contentEquals(other)) }
+            indexedBlocks.count { (j, other) -> (j > i && block.contentEquals(other)) } /* We count all only once. (i<=j) were already counted */
         }
     }
 
@@ -27,6 +26,8 @@ class Challenge8(file: File) {
             sliceArray(i until min(i + sliceSize, size - 1))
         }
     }
+
+    private class DetectionResult(val score: Int, val hex: HexString)
 
 }
 
