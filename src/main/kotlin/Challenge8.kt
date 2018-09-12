@@ -1,55 +1,43 @@
 import org.apache.shiro.codec.Hex
 import java.io.File
 import java.nio.charset.StandardCharsets
-import java.util.*
 
 class ECBAnalyzer {
 
-    private val arrayUtils = ArrayManips()
+    class DetectionResult(val matches: Int, val string: String)
 
-    fun detectEcb(hexCiphers: List<String>, blockLength: Int): String? {
-        var maxMatches = -1
-        var result: String? = null
-        for (cipher in hexCiphers) {
-            val matches = countBlockMatches(Hex.decode(cipher), blockLength)
-            if (matches > maxMatches) {
-                maxMatches = matches
-                result = cipher
-            }
-        }
-        return result
+    fun detectEcb(hexCiphers: List<String>, blockSize: Int): String? {
+        return hexCiphers.map { DetectionResult(countBlockMatches(Hex.decode(it), blockSize), it) }.maxBy {it.matches}!!.string
     }
 
-    fun countBlockMatches(cipher: ByteArray, blockLength: Int): Int {
-        val blocksCount = cipher.size / blockLength
+    private fun countBlockMatches(cipher: ByteArray, blockSize: Int): Int {
+        val blocksCount = cipher.size / blockSize
         var matches = 0
 
         for (index in 0 until blocksCount) {
-            val block = arrayUtils.extractBlock(cipher, blockLength, index)
+            val block = cipher.extractBlock(blockSize, index)
             for (j in index + 1 until blocksCount) {
-                val other = arrayUtils.extractBlock(cipher, blockLength, j)
-                if (Arrays.equals(block, other))
+                val other = cipher.extractBlock(blockSize, j)
+                if (block.contentEquals(other))
                     matches++
             }
         }
 
         return matches
     }
-}
 
-class ArrayManips {
-    fun extractBlock(raw: ByteArray, blockLength: Int, blockIndex: Int): ByteArray {
-        val from = blockLength * blockIndex
-        val to = Math.min(blockLength * (blockIndex + 1), raw.size)
-        return raw.sliceArray(from until to)
+    private fun ByteArray.extractBlock(blockSize: Int, blockIndex: Int): ByteArray {
+        val from = blockSize * blockIndex
+        val to = Math.min(blockSize * (blockIndex + 1), size)
+        return sliceArray(from until to)
     }
 }
 
 class Challenge8(file: File) {
-    val hexCiphers = file.readLines(StandardCharsets.UTF_8)
-    fun detectEcb(blockLength: Int): String { //todo output decrypted string
+    private val hexCiphers = file.readLines(StandardCharsets.UTF_8)
+    fun detectEcb(blockSize: Int): String { //todo output decrypted string
         val detector = ECBAnalyzer()
-        return detector.detectEcb(hexCiphers, blockLength)!!
+        return detector.detectEcb(hexCiphers, blockSize)!!
     }
 }
 
