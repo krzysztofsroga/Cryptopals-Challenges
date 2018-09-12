@@ -1,8 +1,7 @@
-import java.util.Arrays
-
 import org.apache.shiro.codec.Hex
 import java.io.File
 import java.nio.charset.StandardCharsets
+import java.util.*
 
 class ECBAnalyzer {
 
@@ -42,19 +41,20 @@ class ArrayManips {
     fun extractBlock(raw: ByteArray, blockLength: Int, blockIndex: Int): ByteArray {
         val from = blockLength * blockIndex
         val to = Math.min(blockLength * (blockIndex + 1), raw.size)
-        return Arrays.copyOfRange(raw, from, to)
+        return raw.sliceArray(from until to)
     }
 }
 
-
-class Challenge8(val hexCiphers: List<String>) {
-    fun detectEcb(blockLength: Int): String {
+class Challenge8(file: File) {
+    val hexCiphers = file.readLines(StandardCharsets.UTF_8)
+    fun detectEcb(blockLength: Int): String { //todo output decrypted string
         val detector = ECBAnalyzer()
         return detector.detectEcb(hexCiphers, blockLength)!!
     }
 }
 
 fun main(args: Array<String>) {
-    val challenge = Challenge8(File("src/main/resources/Challenge8.txt").readLines(StandardCharsets.UTF_8))
-    println(challenge.detectEcb(16))
+    val challenge = Challenge8(File("src/main/resources/Challenge8.txt"))
+    val solution = challenge.detectEcb(16)
+    println(solution)
 }
