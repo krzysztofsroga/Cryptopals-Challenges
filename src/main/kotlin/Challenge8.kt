@@ -13,12 +13,11 @@ object ECBAnalyzer {
 
     private fun countBlockMatches(cipher: ByteArray, blockSize: Int): Int {
         var matches = 0
-        cipher.toSlices(blockSize).forEachIndexed { index, block ->
-            cipher.toSlices(blockSize).forEachIndexed { j, other ->
-                if (j > index) {
-                    if(block.contentEquals(other))
-                        matches++
-                }
+        val blocks = cipher.toSlices(blockSize)
+        blocks.forEachIndexed { index, block ->
+            blocks.forEachIndexed { j, other ->
+                if (j > index && block.contentEquals(other))
+                    matches++
             }
         }
         return matches
