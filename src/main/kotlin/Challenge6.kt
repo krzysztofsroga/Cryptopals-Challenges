@@ -5,7 +5,7 @@ class BFR(val score: Double, val string: String)
 
 
 class Challenge6(file: File) {
-    private val fileData = readAndDecodeFile(file)
+    private val fileData = AdvancedUtils.readAndDecodeFile(file)
 
     fun breakBestKeySizes(): List<Int> {
         return (2..41).map { keySize -> Pair(keySize, scoreKeysize(keySize)) }.sortedBy { it.second }.map { it.first }
@@ -32,13 +32,7 @@ class Challenge6(file: File) {
         }.transposed().joinToString(separator = "")
     }
 
-    private fun readAndDecodeFile(file: File): String {
-        val stringBuilder = StringBuilder()
-        file.forEachLine { line ->
-            stringBuilder.append(Base64String(line).decoded)
-        }
-        return stringBuilder.toString()
-    }
+
 }
 
 fun main(args: Array<String>) {
@@ -54,7 +48,6 @@ fun main(args: Array<String>) {
     val bestText = bestKeySizes.map { challenge.solveForKeySize(it) }.map { BFR(Utils.scoreStringByCharacters(it), it) }.sortedBy { it.score }.last().string
     println("Best promising one is:\n\n $bestText")
 //    println(challenge.solveForKeySize(29))
-
 //    (2..41).forEach {i->
 //        println("Solution for keySize $i:\n${challenge.solveForKeySize(i)}\n\n\n")
 //    }

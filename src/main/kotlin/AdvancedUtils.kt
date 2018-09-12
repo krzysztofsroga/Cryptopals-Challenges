@@ -1,3 +1,4 @@
+import java.io.File
 import java.lang.IllegalArgumentException
 import java.math.BigInteger
 import java.nio.ByteBuffer
@@ -6,6 +7,16 @@ import kotlin.experimental.xor
 import java.nio.charset.Charset
 import java.util.*
 import kotlin.math.min
+
+object AdvancedUtils {
+    fun readAndDecodeFile(file: File): String {
+        val stringBuilder = java.lang.StringBuilder()
+        file.forEachLine { line ->
+            stringBuilder.append(Base64String(line).decoded)
+        }
+        return stringBuilder.toString()
+    }
+}
 
 val charset: Charset = StandardCharsets.UTF_8
 
