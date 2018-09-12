@@ -9,7 +9,7 @@ import java.io.File
 import java.nio.charset.StandardCharsets
 
 
-class PkcsN7Padding {
+//class PkcsN7Padding {
 //
 //    fun padPkcsN7(raw: ByteArray, blockLength: Int): ByteArray {
 //        val fullBlocks = raw.size / blockLength
@@ -20,13 +20,13 @@ class PkcsN7Padding {
 //        Arrays.fill(result, raw.size, result.size, padding.toByte())
 //        return result
 //    }
-
-    fun removePadding(raw: ByteArray): ByteArray {
-        val paddingLength = raw[raw.size - 1]
-        return if (raw.size - paddingLength < 0) raw else Arrays.copyOf(raw, raw.size - paddingLength)
-
-    }
-
+//
+//    fun removePadding(raw: ByteArray): ByteArray {
+//        val paddingLength = raw[raw.size - 1]
+//        return if (raw.size - paddingLength < 0) raw else Arrays.copyOf(raw, raw.size - paddingLength)
+//
+//    }
+//
 //    @Throws(InvalidPaddingException::class)
 //    fun validateAndremovePadding(raw: ByteArray): ByteArray {
 //        val paddingLength = raw[raw.size - 1]
@@ -47,12 +47,12 @@ class PkcsN7Padding {
 //    }
 //
 //    inner class InvalidPaddingException : RuntimeException()
-
-}
+//
+//}
 
 class AESECB {
 
-    private val padding = PkcsN7Padding()
+//    private val padding = PkcsN7Padding()
 //
 //    val blockSize: Int
 //        get() = 16
@@ -63,7 +63,9 @@ class AESECB {
         cipher.setPaddingScheme(PaddingScheme.NONE)
 
         val plaintext = cipher.decrypt(ciphertext, key)
-        return padding.removePadding(plaintext.bytes)
+        val raw = plaintext.bytes
+        return raw.dropLast(raw[raw.size - 1].toInt()).toByteArray()
+//        return padding.removePadding(plaintext.bytes)
     }
 //
 //    fun encrypt(plaintext: ByteArray, key: ByteArray): ByteArray {
