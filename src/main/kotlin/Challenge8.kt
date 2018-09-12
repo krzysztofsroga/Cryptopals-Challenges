@@ -8,31 +8,32 @@ object ECBAnalyzer {
     class DetectionResult(val matches: Int, val string: String)
 
     fun detectEcb(hexCiphers: List<String>, blockSize: Int): String? {
-        return hexCiphers.map { DetectionResult(countBlockMatches(Hex.decode(it), blockSize), it) }.maxBy { it.matches }!!.string
+        return hexCiphers.map {
+            DetectionResult(countBlockMatches(Hex.decode(it), blockSize), it)
+        }.maxBy { it.matches }!!.string
     }
 
     private fun countBlockMatches(cipher: ByteArray, blockSize: Int): Int {
-        var matches = 0
         val blocks = cipher.toSlices(blockSize)
-        blocks.forEachIndexed { index, block ->
-            blocks.forEachIndexed { j, other ->
-                if (j > index && block.contentEquals(other))
-                    matches++
-            }
+        val indexedBlocks = blocks.mapIndexed { index, block -> index to block }
+        return indexedBlocks.sumBy { (i, block) ->
+            indexedBlocks.count { (j, other) -> (j > i && block.contentEquals(other)) }
         }
-        return matches
+
+//        var matches = 0
+//        blocks.forEachIndexed { index, block ->
+//            blocks.forEachIndexed { j, other ->
+//                if (j > index && block.contentEquals(other))
+//                    matches++
+//            }
+//        }
+//        return matches
     }
 
     private fun ByteArray.toSlices(sliceSize: Int): List<ByteArray> {
         return (0 until size step sliceSize).map { i ->
             sliceArray(i until min(i + sliceSize, size - 1))
         }
-    }
-
-    private fun ByteArray.extractBlock(blockSize: Int, blockIndex: Int): ByteArray {
-        val from = blockSize * blockIndex
-        val to = min(from + blockSize, size)
-        return sliceArray(from until to)
     }
 }
 
