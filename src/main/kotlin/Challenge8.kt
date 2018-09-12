@@ -3,13 +3,14 @@ import java.io.File
 import java.nio.charset.StandardCharsets
 import kotlin.math.min
 
-object ECBAnalyzer {
-
+class Challenge8(file: File) {
     class DetectionResult(val matches: Int, val string: String)
 
-    fun detectEcb(hexCiphers: List<String>, blockSize: Int): String? {
-        return hexCiphers.map {
-            DetectionResult(countBlockMatches(Hex.decode(it), blockSize), it)
+    private val hexStrings = file.readLines(StandardCharsets.UTF_8)
+
+    fun detectEcb(blockSize: Int): String {
+        return hexStrings.map { hex ->
+            DetectionResult(countBlockMatches(Hex.decode(hex), blockSize), hex)
         }.maxBy { it.matches }!!.string
     }
 
@@ -19,15 +20,6 @@ object ECBAnalyzer {
         return indexedBlocks.sumBy { (i, block) ->
             indexedBlocks.count { (j, other) -> (j > i && block.contentEquals(other)) }
         }
-
-//        var matches = 0
-//        blocks.forEachIndexed { index, block ->
-//            blocks.forEachIndexed { j, other ->
-//                if (j > index && block.contentEquals(other))
-//                    matches++
-//            }
-//        }
-//        return matches
     }
 
     private fun ByteArray.toSlices(sliceSize: Int): List<ByteArray> {
@@ -35,13 +27,7 @@ object ECBAnalyzer {
             sliceArray(i until min(i + sliceSize, size - 1))
         }
     }
-}
 
-class Challenge8(file: File) {
-    private val hexCiphers = file.readLines(StandardCharsets.UTF_8)
-    fun detectEcb(blockSize: Int): String {
-        return ECBAnalyzer.detectEcb(hexCiphers, blockSize)!!
-    }
 }
 
 fun main(args: Array<String>) {
