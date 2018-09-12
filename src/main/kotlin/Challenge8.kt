@@ -62,7 +62,7 @@ object ECBAnalyzer {
         return matches
     }
 
-    private fun ByteArray.toSlices(sliceSize: Int): List<ByteArray> { //TODO this function is broken, returns one more slice!
+    private fun ByteArray.toSlices(sliceSize: Int): List<ByteArray> {
         return (0 until size step sliceSize).map { i ->
             sliceArray(i until min(i + sliceSize, size - 1))
         }
