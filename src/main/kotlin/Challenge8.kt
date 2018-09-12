@@ -12,53 +12,15 @@ object ECBAnalyzer {
     }
 
     private fun countBlockMatches(cipher: ByteArray, blockSize: Int): Int {
-        val blocksCount = cipher.size / blockSize
         var matches = 0
-
-        println("ups ups ups ups ups ups ups ups ups ups ups ups ups ups ups ups")
-        println("BlocksCount = $blocksCount (divided ${cipher.size} over $blockSize")
-        println("SlicesCount = ${cipher.toSlices(blockSize).size}")
-        println("Slices: ${cipher.toSlices(blockSize)}")
-
-        for (index in 0 until blocksCount) {
-            println("HAHA $index")
-            val block = cipher.extractBlock(blockSize, index)
-            for (j in index + 1 until blocksCount) {
-                println("i = $index, j = $j")
-                val other = cipher.extractBlock(blockSize, j)
-//                if (block.contentEquals(other))
-//                    matches++
-            }
-        }
-        println("ELOELO ELOELO ELOELO ELOELO ELOELO ELOELO ELOELO ELOELO ELOELO ELOELO ELOELO ELOELO ELOELO ELOELO ELOELO ELOELO")
-
         cipher.toSlices(blockSize).forEachIndexed { index, block ->
-            println("HAHA $index")
-            for (j in index + 1 until blocksCount) {
-                println("i = $index, j = $j")
-                val other = cipher.extractBlock(blockSize, j)
-                if (block.contentEquals(other))
-                    matches++
-            }
-        }
-
-        println("---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----")
-
-        cipher.toSlices(blockSize).forEachIndexed { index, block ->
-            println("HAHA $index")
             cipher.toSlices(blockSize).forEachIndexed { j, other ->
                 if (j > index) {
-                    println("i = $index, j = $j")
-//                    if(block.contentEquals(other))
-//                        matches++
+                    if(block.contentEquals(other))
+                        matches++
                 }
-
             }
         }
-
-
-
-
         return matches
     }
 
@@ -66,12 +28,6 @@ object ECBAnalyzer {
         return (0 until size step sliceSize).map { i ->
             sliceArray(i until min(i + sliceSize, size - 1))
         }
-
-//        val slices = mutableListOf<ByteArray>()
-//        for (i in 0 until size step sliceSize) {
-//            slices += sliceArray(i until min(i + sliceSize, size - 1))
-//        }
-//        return slices
     }
 
     private fun ByteArray.extractBlock(blockSize: Int, blockIndex: Int): ByteArray {
