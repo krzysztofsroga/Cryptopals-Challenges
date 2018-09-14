@@ -11,7 +11,7 @@ class Challenge7(file: File) {
     private val fileData = Base64.decode(file.readLines(StandardCharsets.UTF_8).joinToString(""))!!
 
     fun decrypt(key: String): String {
-        val aesService = AesCipherService().
+        val aesService = AesCipherService()
         aesService.setMode(OperationMode.ECB)
         aesService.setPaddingScheme(PaddingScheme.NONE)
 
